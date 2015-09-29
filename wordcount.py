@@ -1,4 +1,4 @@
-# put your code here.
+import string
 
 def produce_word_tokens(filename):
     """Opens text file and iterates over lines to produce word tokens.
@@ -7,14 +7,13 @@ def produce_word_tokens(filename):
     file_object = open(filename)
     tokens_list = []
     for line in file_object:
-        
-        punc_list = ('!', ',', '.', '--', '?', ':', ';', '"', "'", "_",
-                     "(", ")")
         tokens = line.split()
         for token in tokens:
             #token = token.strip(".!?,;:")
-            token_out = "".join(char for char in token if char not in punc_list)
-            tokens_list.append(token_out.lower())
+            token = token.translate(None, string.punctuation)
+            # token_out = "".join(char for char in token if char not in punc_list)
+            tokens_list.append(token.lower())
+        # see also http://stackoverflow.com/questions/3939361/remove-specific-characters-from-a-string-in-python
         # tokens_list.extend(tokens) 
         # let's ask a question about why this didn't work with extend !!!!
        
@@ -31,6 +30,11 @@ def token_to_dictionary(tokens_list):
     #         word_dict[token] += 1
     #     else:
     #         word_dict[token] = 1
+        if len(token) < 1:
+            pass
+        elif not token[0].isalpha():
+            token = token[1:]
+
         word_dict[token] = word_dict.get(token, 0) + 1
 
     return word_dict
